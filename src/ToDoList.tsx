@@ -13,42 +13,27 @@ type ToDoListType = {
     removeTask: (taskId: string) => void
     changeFilter: (value: FilterValueType) => void
     addTask: (title: string) => void
+    changeTaskStatus: (id: string, isDone: boolean) => void
+    filter: FilterValueType
 }
-
 
 export function TodoList(props: ToDoListType) {
     const [title, setTitle] = useState("")
-    //добавление таски с проверкой на пустую строку
-    // const addTask = () => {
-    //     const trimmedTitle = title.trim()
-    //     if (trimmedTitle) {
-    //         props.addTask(trimmedTitle)
-    //     }
-    //     setTitle("")
-    // }
+    const [error, setError] = useState<string | null>(null)
 
-    //добавление таски с проверкой на пустую строку и алертом через if/else
-    // const addTask = () => {
-    //     const trimmedTitle = title.trim()
-    //     if (trimmedTitle) {
-    //         props.addTask(trimmedTitle)
-    //     } else {alert("Type your task here")}
-    //     setTitle("")
-    // }
-
-//добавление таски с проверкой на пустую строку и алертом через тернарный оператор
     const addTask = () => {
-        const trimmedTitle = title.trim()
-        trimmedTitle !== ""
-            ? props.addTask(trimmedTitle)
-            : alert("You need to type your task here")
-        setTitle("")
+        if (title.trim() !== "") {
+            props.addTask(title)
+            setTitle("")
+        } else {
+            setError("Title is required")
+        }
     }
-
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         setTitle(event.currentTarget.value)
     }
     const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        setError(null)
         if (event.key === 'Enter') {
             addTask()
         }
@@ -64,17 +49,21 @@ export function TodoList(props: ToDoListType) {
                 <input value={title}
                        onChange={onChangeHandler}
                        onKeyDown={onKeyDownHandler}
-                       placeholder="enter your task"/>
+                       placeholder="enter your task here"
+                       className={error ? "error" : ""}/>
                 <button onClick={addTask}>+</button>
+                {error && <div className="error-message">{error}</div>}
             </div>
             <ul>
                 {props.tasks.map((t) => {
-                        const onClickHandler = () => {
-                            props.removeTask(t.id)
+                        const onClickHandler = () => props.removeTask(t.id)
+                        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                            const newIsDoneValue = e.currentTarget.checked
+                            props.changeTaskStatus(t.id, newIsDoneValue)
                         }
                         return (
-                            <li key={t.id}>
-                                <input type="checkbox" checked={t.isDone}/>
+                            <li key={t.id} className={t.isDone ? "is-done" : ""}>
+                                <input type="checkbox" checked={t.isDone} onChange={onChangeHandler}/>
                                 <span>{t.title}</span>
                                 <button onClick={onClickHandler}>✖️
                                 </button>
@@ -84,9 +73,9 @@ export function TodoList(props: ToDoListType) {
                 )}
             </ul>
             <div>
-                <button onClick={onClickButtonHandler('all')}>All</button>
-                <button onClick={onClickButtonHandler('active')}>Active</button>
-                <button onClick={onClickButtonHandler('completed')}>Completed
+                <button className={props.filter === "all" ? "active-filter" : ""} onClick={onClickButtonHandler('all')}>All</button>
+                <button className={props.filter === "active" ? "active-filter" : ""} onClick={onClickButtonHandler('active')}>Active</button>
+                <button className={props.filter === "completed" ? "active-filter" : ""} onClick={onClickButtonHandler('completed')}>Completed
                 </button>
             </div>
 
