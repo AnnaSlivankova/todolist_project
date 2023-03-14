@@ -8,30 +8,14 @@ const instance = axios.create({
     }
 })
 
-type TodolistType = {
-    id: string
-    addedDate: string
-    order: number
-    title: string
-}
-
-type DataType = {
-    item: TodolistType
-}
-
-export type ResponseTodolistType<D = {}> = {
-    resultCode: number,
-    messages: string[],
-    data: D
-}
-
+// api
 export const todolistAPI = {
     getTodolists() {
         return instance.get<TodolistType>('todo-lists')
             .then(res => res.data)
     },
     createTodolist(title: string) {
-        return instance.post<ResponseTodolistType<DataType>>('todo-lists', {title})
+        return instance.post<ResponseTodolistType<{item: TodolistType}>>('todo-lists', {title})
             .then(res => res.data)
     },
     deleteTodolist(todolistId: string) {
@@ -46,11 +30,13 @@ export const todolistAPI = {
 
 export const tasksAPI = {
     getTasks(todolistId: string) {
-        return instance.get<{ items: TaskType[], totalCount: number, error: string }>(`todo-lists/${todolistId}/tasks`)
+        return instance.get<{ items: TaskType[],
+            totalCount: number,
+            error: string }>(`todo-lists/${todolistId}/tasks`)
             .then(res => res.data)
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseTasksType<TaskDataType>>(`todo-lists/${todolistId}/tasks`, {title})
+        return instance.post<ResponseTasksType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
             .then(res => res.data)
     },
     deleteTask(todolistId: string, taskId: string) {
@@ -63,10 +49,39 @@ export const tasksAPI = {
     }
 }
 
-type TaskType = {
+
+// types
+export type TodolistType = {
+    id: string
+    addedDate: string
+    order: number
+    title: string
+}
+type ResponseTodolistType<D = {}> = {
+    resultCode: number,
+    messages: string[],
+    data: D
+}
+
+export enum Completed {
+    done = 0,
+    notDone = 1,
+    inProgress = 2,
+    draft = 3
+}
+
+// enum TaskPriorities {
+//     Low = 0,
+//     Middle = 1,
+//     Hi = 2,
+//     Urgently = 3,
+//     Later = 4
+// }
+
+export type TaskType = {
     description: string
     title: string
-    completed: boolean
+    completed: Completed
     status: number
     priority: number
     startDate: string
@@ -76,11 +91,6 @@ type TaskType = {
     order: number
     addedDate: string
 }
-
-type TaskDataType = {
-    item: TaskType
-}
-
 type ResponseTasksType<D = {}> = {
     resultCode: number
     messages: string[]

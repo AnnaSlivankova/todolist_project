@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {ComponentStory, ComponentMeta} from '@storybook/react';
+import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import {Task} from "../Task";
+import {Completed} from "../api/todolist-api";
 
 export default {
     title: 'Todolist/Task',
@@ -11,7 +12,19 @@ export default {
         changeTaskStatus: action('Task status was changed'),
         changeTaskTitle: action('Task title was changed'),
         todolistId: 'todolistId',
-        task: {id: 'task id', title: 'task title', isDone: false}
+        task: {
+            id: 'task id',
+            title: 'task title',
+            completed: Completed.notDone,
+            todoListId: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            order: 0,
+            deadline: '',
+            addedDate: '',
+            description: ''
+        }
     }
 } as ComponentMeta<typeof Task>;
 
@@ -21,16 +34,48 @@ export const TaskIsNotDoneExample = Template.bind({});
 
 export const TaskIsDoneExample = Template.bind({});
 TaskIsDoneExample.args = {
-    task: {id: 'task id', title: 'task is done', isDone: true}
+    task: {
+        id: 'task id',
+        title: 'task is done',
+        completed: Completed.done,
+        todoListId: '',
+        status: 0,
+        priority: 0,
+        startDate: '',
+        order: 0,
+        deadline: '',
+        addedDate: '',
+        description: ''
+    }
 };
 
-
 const Template1: ComponentStory<typeof Task> = (args) => {
+    const [task, setTask] = useState({id: 'task id',
+        title: 'task title',
+        completed: Completed.notDone,
+        todoListId: '',
+        status: 0,
+        priority: 0,
+        startDate: '',
+        order: 0,
+        deadline: '',
+        addedDate: '',
+        description: ''
+    })
 
-    const [task, setTask] = useState({id: 'task id', title: 'task title', isDone: false})
-
-    const changeTaskStatus =(id: string, isDone: boolean, todolistId: string) => {
-        setTask({id: 'task id', title: 'task title', isDone: !task.isDone})
+    const changeTaskStatus = (id: string, completed: Completed, todolistId: string) => {
+        setTask({id: 'task id',
+            title: 'task title',
+            completed: task.completed ? Completed.done : Completed.notDone,
+            todoListId: '',
+            status: 0,
+            priority: 0,
+            startDate: '',
+            order: 0,
+            deadline: '',
+            addedDate: '',
+            description: ''
+        })
     }
 
     return <Task task={task}
@@ -41,6 +86,4 @@ const Template1: ComponentStory<typeof Task> = (args) => {
 };
 
 export const TaskEditableExample = Template1.bind({});
-TaskEditableExample.args = {
-
-};
+TaskEditableExample.args = {};
