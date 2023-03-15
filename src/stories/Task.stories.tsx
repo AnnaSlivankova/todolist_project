@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import {Task} from "../Task";
-import {Completed} from "../api/todolist-api";
+import {TaskStatuses} from "../api/todolist-api";
 
 export default {
     title: 'Todolist/Task',
@@ -15,9 +15,8 @@ export default {
         task: {
             id: 'task id',
             title: 'task title',
-            completed: Completed.notDone,
             todoListId: '',
-            status: 0,
+            status: TaskStatuses.New,
             priority: 0,
             startDate: '',
             order: 0,
@@ -37,9 +36,8 @@ TaskIsDoneExample.args = {
     task: {
         id: 'task id',
         title: 'task is done',
-        completed: Completed.done,
         todoListId: '',
-        status: 0,
+        status: TaskStatuses.Completed,
         priority: 0,
         startDate: '',
         order: 0,
@@ -52,9 +50,8 @@ TaskIsDoneExample.args = {
 const Template1: ComponentStory<typeof Task> = (args) => {
     const [task, setTask] = useState({id: 'task id',
         title: 'task title',
-        completed: Completed.notDone,
         todoListId: '',
-        status: 0,
+        status: TaskStatuses.New,
         priority: 0,
         startDate: '',
         order: 0,
@@ -63,12 +60,11 @@ const Template1: ComponentStory<typeof Task> = (args) => {
         description: ''
     })
 
-    const changeTaskStatus = (id: string, completed: Completed, todolistId: string) => {
+    const changeTaskStatus = (id: string, status: TaskStatuses, todolistId: string) => {
         setTask({id: 'task id',
             title: 'task title',
-            completed: task.completed ? Completed.done : Completed.notDone,
             todoListId: '',
-            status: 0,
+            status: task.status ? TaskStatuses.Completed : TaskStatuses.New,
             priority: 0,
             startDate: '',
             order: 0,

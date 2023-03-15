@@ -1,10 +1,10 @@
 import {Provider} from "react-redux";
-import {AppRootStateType, store} from "../../state/store";
+import {AppRootStateType} from "../../state/store";
 import {combineReducers, createStore} from "redux";
 import {v1} from "uuid";
 import {todolistsReducer} from "../../state/todolists-reducer";
 import {tasksReducer} from "../../state/tasks-reducer";
-import {Completed} from "../../api/todolist-api";
+import {TaskStatuses} from "../../api/todolist-api";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -20,9 +20,8 @@ const initialGlobalState = {
         ['todolistId1']: [
             {id: v1(),
                 title: 'HTML&CSS',
-                completed: Completed.done,
                 description: '',
-                status: 0,
+                status: TaskStatuses.Completed,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -32,9 +31,8 @@ const initialGlobalState = {
             },
             {id: v1(),
                 title: 'JS',
-                completed: Completed.done,
+                status: TaskStatuses.Completed,
                 description: '',
-                status: 0,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -46,9 +44,8 @@ const initialGlobalState = {
         ['todolistId2']: [
             {id: v1(),
                 title: 'Milk',
-                completed: Completed.done,
+                status: TaskStatuses.Completed,
                 description: '',
-                status: 0,
                 priority: 0,
                 startDate: '',
                 deadline: '',
@@ -58,9 +55,8 @@ const initialGlobalState = {
             },
             {id: v1(),
                 title: 'React Book',
-                completed: Completed.done,
+                status: TaskStatuses.Completed,
                 description: '',
-                status: 0,
                 priority: 0,
                 startDate: '',
                 deadline: '',

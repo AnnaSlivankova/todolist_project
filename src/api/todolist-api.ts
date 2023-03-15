@@ -11,7 +11,7 @@ const instance = axios.create({
 // api
 export const todolistAPI = {
     getTodolists() {
-        return instance.get<TodolistType>('todo-lists')
+        return instance.get<TodolistType[]>('todo-lists')
             .then(res => res.data)
     },
     createTodolist(title: string) {
@@ -43,8 +43,8 @@ export const tasksAPI = {
         return instance.delete<ResponseTasksType>(`todo-lists/${todolistId}/tasks/${taskId}`)
             .then(res => res.data)
     },
-    updateTask(todolistId: string, taskId: string, title: string) {
-        return instance.put<ResponseTasksType>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskType) {
+        return instance.put<ResponseTasksType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
             .then(res => res.data)
     }
 }
@@ -63,36 +63,43 @@ type ResponseTodolistType<D = {}> = {
     data: D
 }
 
-export enum Completed {
-    done = 0,
-    notDone = 1,
-    inProgress = 2,
-    draft = 3
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
 }
-
-// enum TaskPriorities {
-//     Low = 0,
-//     Middle = 1,
-//     Hi = 2,
-//     Urgently = 3,
-//     Later = 4
-// }
-
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4
+}
 export type TaskType = {
-    description: string
-    title: string
-    completed: Completed
-    status: number
-    priority: number
-    startDate: string
-    deadline: string
     id: string
+    title: string
+    description: string
     todoListId: string
     order: number
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
     addedDate: string
+
 }
 type ResponseTasksType<D = {}> = {
     resultCode: number
     messages: string[]
     data: D
 }
+export type UpdateTaskType = {
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+
