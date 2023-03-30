@@ -5,16 +5,18 @@ import {v1} from "uuid";
 import {todolistsReducer} from "../../features/TodolistsList/todolists-reducer";
 import {tasksReducer} from "../../features/TodolistsList/tasks-reducer";
 import {TaskStatuses} from "../../api/todolist-api";
+import {appReducer} from "../../app/app-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todolists: todolistsReducer
+    todolists: todolistsReducer,
+    app: appReducer
 })
 
 const initialGlobalState = {
     todolists: [
-        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0},
-        {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0}
+        {id: 'todolistId1', title: 'What to learn', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'},
+        {id: 'todolistId2', title: 'What to buy', filter: 'all', addedDate: '', order: 0, entityStatus: 'idle'}
     ],
     tasks: {
         ['todolistId1']: [
@@ -27,7 +29,8 @@ const initialGlobalState = {
                 deadline: '',
                 todoListId: '',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {id: v1(),
                 title: 'JS',
@@ -38,7 +41,8 @@ const initialGlobalState = {
                 deadline: '',
                 todoListId: '',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
         ],
         ['todolistId2']: [
@@ -51,7 +55,8 @@ const initialGlobalState = {
                 deadline: '',
                 todoListId: '',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             },
             {id: v1(),
                 title: 'React Book',
@@ -62,10 +67,12 @@ const initialGlobalState = {
                 deadline: '',
                 todoListId: '',
                 order: 0,
-                addedDate: ''
+                addedDate: '',
+                entityStatus: 'idle'
             }
         ]
-    }
+    },
+    app: {status: 'idle', error: null}
 }
 
 export const storyBookStore = createStore(rootReducer, initialGlobalState as AppRootStateType)

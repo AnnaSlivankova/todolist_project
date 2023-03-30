@@ -2,16 +2,18 @@ import React, {memo, MouseEvent, useCallback, useEffect} from 'react';
 import {TaskStatuses, TaskType} from "../../../api/todolist-api";
 import {FilterValueType, TodolistDomainType} from "../todolists-reducer";
 import {useAppDispatch} from "../../../app/store";
-import {getTasksTC} from "../tasks-reducer";
+import {getTasksTC, TaskDomainType} from "../tasks-reducer";
 import {EditableSpan} from "../../../components/EditableSpan/EditableSpan";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {AddItemForm} from "../../../components/AddItemForm/AddItemForm";
 import {Task} from "./Task/Task";
+import {RequestStatusType} from "../../../app/app-reducer";
 
 type PropsType = {
     todolist: TodolistDomainType
-    tasks: Array<TaskType>
+    entityStatus: RequestStatusType
+    tasks: Array<TaskDomainType>
     removeTask: (taskId: string, todolistId: string) => void
     changeFilter: (value: FilterValueType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
@@ -64,10 +66,10 @@ export const Todolist = memo(({...props}: PropsType) => {
 
     return (
         <div>
-            <h3><EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
-                <IconButton onClick={removeTodolist}><Delete/></IconButton>
+            <h3><EditableSpan value={props.todolist.title} onChange={changeTodolistTitle} disabled={props.entityStatus === 'loading'}/>
+                <IconButton onClick={removeTodolist} disabled={props.entityStatus === 'loading'}><Delete/></IconButton>
             </h3>
-            <AddItemForm addItem={addTask}/>
+            <AddItemForm addItem={addTask} disabled={props.entityStatus === 'loading'}/>
             <div>
                 {tasks.map((t) => {
 
@@ -76,6 +78,7 @@ export const Todolist = memo(({...props}: PropsType) => {
                                 key={t.id}
                                 todolistId={props.todolist.id}
                                 task={t}
+                                entityStatus={t.entityStatus}
                                 removeTask={removeTask}
                                 changeTaskStatus={changeTaskStatus}
                                 changeTaskTitle={changeTaskTitle}

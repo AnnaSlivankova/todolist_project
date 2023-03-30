@@ -6,6 +6,7 @@ import {
 } from './tasks-reducer'
 import {removeTodolistAC} from "./todolists-reducer";
 import {TaskStatuses} from "../../api/todolist-api";
+import {RequestStatusType} from "../../app/app-reducer";
 
 let startState: TasksStateType
 
@@ -22,7 +23,8 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
-                todoListId: ''
+                todoListId: '',
+                entityStatus: 'idle'
             },
             {
                 id: '2',
@@ -34,7 +36,8 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
-                todoListId: ''
+                todoListId: '',
+                entityStatus: 'idle'
             },
             {
                 id: '3',
@@ -46,7 +49,8 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
-                todoListId: ''
+                todoListId: '',
+                entityStatus: 'idle'
             },
         ],
         'todolistId2': [
@@ -60,7 +64,8 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
-                todoListId: ''
+                todoListId: '',
+                entityStatus: 'idle'
             },
             {
                 id: '2',
@@ -72,7 +77,8 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
-                todoListId: ''
+                todoListId: '',
+                entityStatus: 'idle'
             },
             {
                 id: '3',
@@ -84,7 +90,8 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
-                todoListId: ''
+                todoListId: '',
+                entityStatus: 'idle'
             },
         ]
     }

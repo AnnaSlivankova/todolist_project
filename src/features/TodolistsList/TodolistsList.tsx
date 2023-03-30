@@ -72,6 +72,7 @@ export const TodolistsList: React.FC = () => {
                             <Paper style={{padding: '10px'}}>
                                 <Todolist
                                     todolist={todolists}
+                                    entityStatus={todolists.entityStatus}
                                     tasks={allTodolistTasks}
                                     removeTask={removeTask}
                                     changeFilter={changeFilter}

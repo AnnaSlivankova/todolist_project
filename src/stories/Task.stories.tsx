@@ -3,6 +3,7 @@ import {ComponentMeta, ComponentStory} from '@storybook/react';
 import {action} from "@storybook/addon-actions";
 import {Task} from "../features/TodolistsList/Todolist/Task/Task";
 import {TaskStatuses} from "../api/todolist-api";
+import {RequestStatusType} from "../app/app-reducer";
 
 export default {
     title: 'Todolist/Task',
@@ -22,7 +23,8 @@ export default {
             order: 0,
             deadline: '',
             addedDate: '',
-            description: ''
+            description: '',
+            entityStatus: 'idle' as RequestStatusType
         }
     }
 } as ComponentMeta<typeof Task>;
@@ -43,7 +45,8 @@ TaskIsDoneExample.args = {
         order: 0,
         deadline: '',
         addedDate: '',
-        description: ''
+        description: '',
+        // entityStatus: 'idle'
     }
 };
 
@@ -57,7 +60,8 @@ const Template1: ComponentStory<typeof Task> = (args) => {
         order: 0,
         deadline: '',
         addedDate: '',
-        description: ''
+        description: '',
+        entityStatus: 'idle' as RequestStatusType
     })
 
     const changeTaskStatus = (id: string, status: TaskStatuses, todolistId: string) => {
@@ -70,11 +74,13 @@ const Template1: ComponentStory<typeof Task> = (args) => {
             order: 0,
             deadline: '',
             addedDate: '',
-            description: ''
+            description: '',
+            entityStatus: 'idle'
         })
     }
 
     return <Task task={task}
+                 entityStatus={task.entityStatus}
                  changeTaskStatus={changeTaskStatus}
                  changeTaskTitle={args.changeTaskTitle}
                  removeTask={args.removeTask}
