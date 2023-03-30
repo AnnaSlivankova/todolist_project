@@ -15,15 +15,15 @@ export const todolistAPI = {
             .then(res => res.data)
     },
     createTodolist(title: string) {
-        return instance.post<ResponseTodolistType<{item: TodolistType}>>('todo-lists', {title})
+        return instance.post<ResponseType<{item: TodolistType}>>('todo-lists', {title})
             .then(res => res.data)
     },
     deleteTodolist(todolistId: string) {
-        return instance.delete<ResponseTodolistType>(`todo-lists/${todolistId}`)
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
             .then(res => res.data)
     },
     updateTodolist(todolistId: string, title: string) {
-        return instance.put<ResponseTodolistType>(`todo-lists/${todolistId}`, {title})
+        return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title})
             .then(res => res.data)
     }
 }
@@ -36,15 +36,15 @@ export const tasksAPI = {
             .then(res => res.data)
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseTasksType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title})
             .then(res => res.data)
     },
     deleteTask(todolistId: string, taskId: string) {
-        return instance.delete<ResponseTasksType>(`todo-lists/${todolistId}/tasks/${taskId}`)
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
             .then(res => res.data)
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskType) {
-        return instance.put<ResponseTasksType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
+        return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, model)
             .then(res => res.data)
     }
 }
@@ -57,12 +57,6 @@ export type TodolistType = {
     order: number
     title: string
 }
-type ResponseTodolistType<D = {}> = {
-    resultCode: number,
-    messages: string[],
-    data: D
-}
-
 export enum TaskStatuses {
     New = 0,
     InProgress = 1,
@@ -89,7 +83,7 @@ export type TaskType = {
     addedDate: string
 
 }
-type ResponseTasksType<D = {}> = {
+export type ResponseType<D = {}> = {
     resultCode: number
     messages: string[]
     data: D
